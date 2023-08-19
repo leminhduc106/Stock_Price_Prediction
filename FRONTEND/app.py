@@ -170,4 +170,34 @@ def update_graph(selected_dropdown):
     return figure
 
 
+@app.callback(Output('volume', 'figure'),
+              [Input('my-dropdown2', 'value')])
+def update_graph(selected_dropdown_value):
+    dropdown = {"MSFT": "Microsoft",}
+    trace1 = []
+    for stock in selected_dropdown_value:
+        trace1.append(
+          go.Scatter(x=df["date"],
+                     y=df["volume"],
+                     mode='lines', opacity=0.7,
+                     name=f'Volume {dropdown[stock]}', textposition='bottom center'))
+    traces = [trace1]
+    data = [val for sublist in traces for val in sublist]
+    figure = {'data': data, 
+              'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1', 
+                                            '#FF7400', '#FFF400', '#FF0056'],
+            height=600,
+            title=f"Market Volume for {', '.join(str(dropdown[i]) for i in selected_dropdown_value)} Over Time",
+            xaxis={"title":"Date",
+                   'rangeselector': {'buttons': list([{'count': 1, 'label': '1M', 
+                                                       'step': 'month', 
+                                                       'stepmode': 'backward'},
+                                                      {'count': 6, 'label': '6M',
+                                                       'step': 'month', 
+                                                       'stepmode': 'backward'},
+                                                      {'step': 'all'}])},
+                   'rangeslider': {'visible': True}, 'type': 'date'},
+             yaxis={"title":"Transactions Volume"})}
+    return figure
+
 app.run_server(debug=True, port=8080)
