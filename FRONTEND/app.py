@@ -7,7 +7,10 @@ import pickle
 # from tensorflow.python.keras.activations import sigmoid
 
 
-from tensorflow.python.keras.models import load_model
+from tensorflow.keras.models import load_model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, LSTM
+from tensorflow.keras.layers import Dropout
 from sklearn.preprocessing import MinMaxScaler
 
 from alpha_vantage.timeseries import TimeSeries
@@ -17,6 +20,10 @@ from dash import dcc
 from dash import html
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output, State
+
+
+import xgboost
+
 
 app = dash.Dash()
 server = app.server
